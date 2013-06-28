@@ -1,0 +1,68 @@
+table
+{
+	border-width: 0px;
+	border-style: hidden;
+	border-collapse: collapse;
+}
+
+tr.header
+{
+	background-color: #9c9c9c;
+	color: #ffffff;
+	font-weight:bold;
+}
+
+td
+{
+	padding-right: 40px;
+}
+
+td.header
+{
+}
+
+td.in
+{
+	background-color: green;
+	max-width: 1px;
+	max-height: 1px;
+	border-collapse: collapse;
+}
+
+td.out
+{
+	background-color: red;
+	max-width: 1px;
+	max-height: 1px;
+	border-collapse: collapse;
+}
+
+tr.infolight
+{
+	background-color: #EDEDED;
+}
+
+tr.infodark
+{
+	background-color: #DBDBDB;
+}
+
+tr.warnlight
+{
+	background-color: #F8FAB6;
+}
+
+tr.warndark
+{
+	background-color: #FFFF82;
+}
+
+tr.errorlight
+{
+	background-color: #FCCCCC;
+}
+
+tr.errordark
+{
+	background-color: #FC8B8B;
+}

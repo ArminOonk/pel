@@ -1,5 +1,9 @@
 *.py[cod]
 
+# files with private info
+connect.php
+connect.py
+
 # C extensions
 *.so
 

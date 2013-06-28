@@ -1,0 +1,13 @@
+<?php 
+$_CONFIG["Username"] = 'username';
+$_CONFIG["Password"] = 'password';
+$_CONFIG["Host"]     = 'localhost';
+$_CONFIG["Database"] = 'test';
+
+$mysqli = new mysqli($_CONFIG["Host"], $_CONFIG["Username"], $_CONFIG["Password"], $_CONFIG["Database"]);
+// check connection 
+if ($mysqli->connect_errno) {
+    printf("Connect failed: %s\n", $mysqli->connect_error);
+    exit();
+}
+?>
