@@ -12,6 +12,7 @@ from requests.auth import HTTPBasicAuth
 from BeautifulSoup import BeautifulSoup 
 
 from connect import *
+import sendEmail
 
 def getAddress():
 	addressList = []
@@ -77,7 +78,7 @@ with con:
 		cur.execute(query)
 		rows = cur.fetchall()
 
-		if str(len(rows)) > 0:
+		if len(rows) > 0:
 			query = 'UPDATE `ConnectedHosts` SET `Status` = \'In\',`LastSeen`=NOW() WHERE `MAC` = \''+h['mac']+'\''
 			print(query)
 			cur.execute(query)
@@ -86,3 +87,16 @@ with con:
 			print(query)
 			cur.execute(query)
 			rows = cur.fetchall()
+			
+			if h['mac'] != "":
+				mail = sendEmail.sendEmail()
+				mail.fromAddress("prof.pel.45@gmail.com")
+				mail.toAddress("armin.oonk@gmail.com")
+				mail.subject("Unknown device detected")
+				mail.message("Unknown device: "+h['mac'])
+				mail.send()
+				
+				query = "INSERT INTO `test`.`ConnectedHosts` (`Name`, `Device`, `MAC`, `LastSeen`, `LastLeft`, `Status`) VALUES (\'"+h['mac']+"\', \'Unknown\', \'"+h['mac']+"\', NOW(), NOW(), \'In\');";
+				print(query)
+				cur.execute(query)
+				rows = cur.fetchall()
