@@ -79,7 +79,7 @@ with con:
 		rows = cur.fetchall()
 
 		if len(rows) > 0:
-			query = 'UPDATE `ConnectedHosts` SET `Status` = \'In\',`LastSeen`=NOW() WHERE `MAC` = \''+h['mac']+'\''
+			query = 'UPDATE `ConnectedHosts` SET `Status` = \'In\',`LastSeen`=NOW(),`lastIP` = \''+h['ip']+'\' WHERE `MAC` = \''+h['mac']+'\''
 			print(query)
 			cur.execute(query)
 		else:
@@ -96,7 +96,7 @@ with con:
 				mail.message("Unknown device: "+h['mac'])
 				mail.send()
 				
-				query = "INSERT INTO `test`.`ConnectedHosts` (`Name`, `Device`, `MAC`, `LastSeen`, `LastLeft`, `Status`) VALUES (\'"+h['mac']+"\', \'Unknown\', \'"+h['mac']+"\', NOW(), NOW(), \'In\');";
+				query = "INSERT INTO `test`.`ConnectedHosts` (`Name`, `Device`, `MAC`, `LastSeen`, `LastLeft`, `Status`, `lastIP`) VALUES (\'"+h['mac']+"\', \'Unknown\', \'"+h['mac']+"\', NOW(), NOW(), \'In\', \'"+h['mac']+"\');";
 				print(query)
 				cur.execute(query)
 				rows = cur.fetchall()
