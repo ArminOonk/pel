@@ -31,7 +31,10 @@ def getAddress():
 	return addressList
 
 def getAddressModem(modemUsername, modemPassword):
-	r = requests.get('http://192.168.0.1/RgComputers.asp', auth=(modemUsername,modemPassword))
+	try:
+		r = requests.get('http://192.168.0.1/RgComputers.asp', auth=(modemUsername,modemPassword))
+	except requests.exceptions.ConnectionError:
+		return []
 	soup = BeautifulSoup(r.text)
 	addressList = []
 
