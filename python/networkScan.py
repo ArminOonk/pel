@@ -13,6 +13,18 @@ from BeautifulSoup import BeautifulSoup
 
 from connect import *
 import sendEmail
+import os
+
+def beep():
+	os.system("beep -f 784 -r 3 -l 100")
+	time.sleep(0.1)
+	os.system("beep -f 784 -l 600")
+	os.system("beep -f 622 -l 600")
+	os.system("beep -f 698 -l 600")
+	os.system("beep -f 784 -l 200")
+	time.sleep(.2)
+	os.system("beep -f 698 -l 200")
+	os.system("beep -f 784 -l 800")
 
 def getAddress():
 	addressList = []
@@ -103,3 +115,4 @@ with con:
 				print(query)
 				cur.execute(query)
 				rows = cur.fetchall()
+				beep()
