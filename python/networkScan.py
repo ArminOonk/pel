@@ -29,20 +29,14 @@ def beep():
 	os.system("beep -f 698 -l 200")
 	os.system("beep -f 784 -l 800")
 
-def downloadMP3(text, langID=1):
-    language = "hi"
-    if langID == 1:
-        language = "nl"
-    elif langID == 2:
-        language = "en"
-    elif langID == 3:
-        language = "de"
+def downloadMP3(text):
+    language = "nl"
 
     url = "http://translate.google.com/translate_tts?ie=UTF-8&q="+str(text)+"&tl="+language
     print(url)
 
     r = requests.get(url)
-    filename = str(text) + "_" + str(langID) + ".mp3"
+    filename = str(text) + ".mp3"
     print(filename)
     with open(filename, 'wb') as f:
         for chunk in r.iter_content():
@@ -132,7 +126,7 @@ with con:
 					print("File not found, downloading: " + filename)
 					downloadMP3(txt)
 				
-				#os.system("mpg123 " + filename)
+				#os.system("mpg123 \"" + filename + "\"")
 			else:
 				print("Name is empty")
 				
