@@ -2,6 +2,7 @@
 import subprocess 
 import xml.dom.minidom
 import time
+import datetime
 import json
 from subprocess import PIPE 
 from subprocess import Popen 
@@ -86,9 +87,11 @@ with con:
 	print(query)
 	cur.execute(query)
 	
+	isAlert = False
+	
 	# Set the status to In when we see the device
 	for h in hosts:
-		query = 'SELECT * FROM ConnectedHosts WHERE MAC=\''+h['mac']+'\''
+		query = 'SELECT  unix_timestamp(`LastLeft`) FROM ConnectedHosts WHERE MAC=\''+h['mac']+'\''
 
 		cur.execute(query)
 		rows = cur.fetchall()
@@ -97,6 +100,12 @@ with con:
 			query = 'UPDATE `ConnectedHosts` SET `Status` = \'In\',`LastSeen`=NOW(),`lastIP` = \''+h['ip']+'\' WHERE `MAC` = \''+h['mac']+'\''
 			print(query)
 			cur.execute(query)
+			
+			lastSeenTime =  rows[0]["unix_timestamp(`LastLeft`)"]
+			print("lastSeenTime: " + str(lastSeenTime) + " now: " + str(time.time()))
+			print("Last seen: " + str(time.time() - lastSeenTime) + " seconds ago")
+			isAlert = True
+			
 		else:
 			query = 'UPDATE `ConnectedHosts` SET `Status` = \'Out\', `LastLeft`=NOW() WHERE NOT `MAC` = \'C4:17:FE:65:1E:8A\' AND `Status` = \'In\''
 			print(query)
@@ -105,8 +114,8 @@ with con:
 			
 			if h['mac'] != "":
 				mail = sendEmail.sendEmail()
-				mail.fromAddress("prof.pel.45@gmail.com")
-				mail.toAddress("armin.oonk@gmail.com")
+				mail.fromAddress(emailFrom)
+				mail.toAddress(emailTo)
 				mail.subject("Unknown device detected")
 				mail.message("Unknown device: "+h['mac'])
 				mail.send()
@@ -116,3 +125,6 @@ with con:
 				cur.execute(query)
 				rows = cur.fetchall()
 				beep()
+				
+	if isAlert:
+		pass#beep()

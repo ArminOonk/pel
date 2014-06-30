@@ -3,3 +3,9 @@ modemPassword = ""
 
 dbUsername = ""
 dbPassword = ""
+
+emailUsername = ""
+emailPassword = ""
+emailRecipients = [""]
+emailFrom = ""
+emailTo = ""
