@@ -6,11 +6,10 @@ import datetime
 import json
 from subprocess import PIPE 
 from subprocess import Popen 
-import _mysql
 import sys
 import requests
 from requests.auth import HTTPBasicAuth
-from BeautifulSoup import BeautifulSoup 
+from bs4 import BeautifulSoup 
 
 from connect import *
 import sendEmail
@@ -79,6 +78,7 @@ def getAddressModem(modemUsername, modemPassword):
 	
 hosts = getAddress()
 hostsModem = getAddressModem(modemUsername, modemPassword)
+#hostsModem = []
 
 for modem in hostsModem:
 	found = False
@@ -118,7 +118,7 @@ with con:
 			print("Last seen: " + str(time.time() - lastSeenTime) + " seconds ago")
 			
 			print(rows[0])
-			if rows[0]["Name"] != "":
+			if rows[0]["Name"]:
 				print("name: " + rows[0]["Name"])
 				txt = rows[0]["Name"] + " is thuis"
 				filename = txt + ".mp3"
@@ -140,7 +140,7 @@ with con:
 			cur.execute(query)
 			rows = cur.fetchall()
 			
-			if h['mac'] != "":
+			if h['mac']:
 				mail = sendEmail.sendEmail()
 				mail.fromAddress(emailFrom)
 				mail.toAddress(emailTo)
@@ -148,8 +148,8 @@ with con:
 				mail.message("Unknown device: "+h['mac'])
 				mail.send()
 				
-				query = "INSERT INTO `test`.`ConnectedHosts` (`Name`, `Device`, `MAC`, `LastSeen`, `LastLeft`, `Status`, `lastIP`) VALUES (\'"+h['mac']+"\', \'Unknown\', \'"+h['mac']+"\', NOW(), NOW(), \'In\', \'"+h['mac']+"\');";
-				#print(query)
+				query = "INSERT INTO `test`.`ConnectedHosts` (`Name`, `Device`, `MAC`, `LastSeen`, `LastLeft`, `Status`, `lastIP`) VALUES (\'"+h['mac']+"\', \'Unknown\', \'"+h['mac']+"\', NOW(), NOW(), \'In\', \'"+h['ip']+"\');";
+				print(query)
 				cur.execute(query)
 				rows = cur.fetchall()
 				beep()
