@@ -43,7 +43,7 @@ def downloadMP3(text):
 			
 def getAddress():
 	addressList = []
-	pipe = Popen(['nmap', '-oX', '-', '-sn', '192.168.0.1/24'], stdout=PIPE)
+	pipe = Popen(['nmap', '-oX', '-', '-sn', '192.168.17.1/24'], stdout=PIPE)
 
 	dom = xml.dom.minidom.parseString(pipe.stdout.read())
 	for dhost in  dom.getElementsByTagName('host'):
